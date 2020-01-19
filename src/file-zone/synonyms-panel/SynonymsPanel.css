@@ -1,0 +1,11 @@
+.synonym-panel {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.synonyms {
+    width: 600px;
+    margin: auto;
+}
