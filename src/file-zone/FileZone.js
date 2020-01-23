@@ -2,37 +2,30 @@ import React, { Component } from 'react';
 import ControlPanel from '../control-panel/ControlPanel';
 import './FileZone.css';
 import SynonymsPanel from './synonyms-panel/SynonymsPanel';
+import ContentEditable from './content-editable/ContentEditable';
 
 class FileZone extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selection: null,
+      content: '',
     };
-    this.textEditor = React.createRef();
   }
 
   applyStyle = event => {
-    document.execCommand(event.currentTarget.value, false, null);
+    if (document.queryCommandSupported(event.currentTarget.value)) {
+      document.execCommand(event.currentTarget.value, false, null);
+    }
   };
 
   handleMouseUp = () => {
     const { getSynonyms, removeSynonyms } = this.props;
-    let selection;
 
-    if (window.getSelection) {
-      selection = window.getSelection();
-    } else if (document.getSelection) {
-      selection = document.getSelection();
-    } else if (document.selection) {
-      selection = document.selection.createRange().text;
-    }
-
+    const selection = getSelection();
     const text = selection ? selection.toString() : '';
 
     if (text) {
-      const range = selection.getRangeAt(0);
-      this.setState({ selection: [range.startOffset, range.endOffset] });
       getSynonyms(text.trim());
     } else {
       removeSynonyms();
@@ -40,26 +33,24 @@ class FileZone extends Component {
   };
 
   handleSynonymClick = word => {
-    const { selection } = this.state;
     const { removeSynonyms } = this.props;
-    if (this.textEditor.current) {
-      const oldText = this.textEditor.current.textContent;
-      const oldHtml = this.textEditor.current.innerHTML;
-      const oldArr = [
-        oldText.substring(0, selection[0]),
-        oldText.substring(selection[0], selection[1]),
-        oldText.substring(selection[1]),
-      ];
-      oldArr[1] = word;
-      const newText = oldArr.join('');
-      const newHtml = oldHtml.replace(oldText, newText);
-      this.textEditor.current.innerHTML = newHtml;
+      if (document.queryCommandSupported('insertText')) {
+        document.execCommand( 'insertText', false, word );
+      } else {
+        const range = document.selection.createRange();
+        range.deleteContents();
+        range.insertNode(document.createTextNode(word));
+      }
       removeSynonyms();
-    }
+  };
+
+  handleChange = e => {
+    this.setState({ content: e.target.value })
   };
 
   render() {
     const { synonyms, isLoading } = this.props;
+    const { content } = this.state;
     return (
       <React.Fragment>
         <ControlPanel applyStyle={this.applyStyle} />
@@ -69,12 +60,7 @@ class FileZone extends Component {
           isLoading={isLoading}
         />
         <div id="file-zone">
-          <div
-            id="file"
-            ref={this.textEditor}
-            contentEditable="true"
-            onMouseUp={this.handleMouseUp}
-          />
+          <ContentEditable value={content} onChange={this.handleChange} onMouseUp={this.handleMouseUp} />
         </div>
       </React.Fragment>
     );
