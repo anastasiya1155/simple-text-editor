@@ -1,12 +1,29 @@
-#control-panel {
+.control-panel {
     background-color: #fff;
-    height: 25px;
+    height: 35px;
     display: flex;
     align-items: center;
     flex-direction: column;
     padding-top: 5px;
 }
-#format-actions {
+.format-actions {
     width: 200px;
     margin-right: 400px;
+}
+.format-action {
+    border: 1px solid #f1f1f1;
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 2px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background: #fff;
+    text-transform: capitalize;
+    transition: all .3s;
+}
+.format-action:not(:first-child) {
+    margin-left: 4px;
 }

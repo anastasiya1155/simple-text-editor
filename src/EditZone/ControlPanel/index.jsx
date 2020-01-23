@@ -4,8 +4,8 @@ import './ControlPanel.css';
 
 function ControlPanel({ applyStyle }) {
   return (
-    <div id="control-panel">
-      <div id="format-actions">
+    <div className="control-panel">
+      <div className="format-actions">
         <button className="format-action" type="button" value="bold" onClick={applyStyle}>
           <b>B</b>
         </button>

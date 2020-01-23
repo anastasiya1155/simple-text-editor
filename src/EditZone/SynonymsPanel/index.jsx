@@ -12,7 +12,7 @@ const SynonymsPanel = ({ words, handleSynonymClick, isLoading }) => {
     content = 'Select a word to search for synonyms';
   } else {
     content = words.map((w) => (
-      <button type="button" key={w} onClick={() => handleSynonymClick(w)}>
+      <button type="button" key={w} className="synonym" onClick={() => handleSynonymClick(w)}>
         {w}
       </button>
     ));
