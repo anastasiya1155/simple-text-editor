@@ -1,8 +1,9 @@
 import React from 'react';
+import * as PropTypes from 'prop-types';
 import { normalizeHtml, replaceCaret } from '../../utils';
 import './ContentEditable.css';
 
-class ContentEditable extends React.Component{
+class ContentEditable extends React.Component {
   constructor(props) {
     super(props);
 
@@ -19,19 +20,21 @@ class ContentEditable extends React.Component{
   }
 
   componentDidUpdate() {
+    const { value } = this.props;
     if (!this.el.current) {
       return;
     }
 
-    if (this.props.value !== this.el.current.innerHTML) {
-      this.previousValue = this.props.value;
-      this.el.current.innerHTML = this.props.value;
+    if (value !== this.el.current.innerHTML) {
+      this.previousValue = value;
+      this.el.current.innerHTML = value;
     }
 
     replaceCaret(this.el.current);
   }
 
   onChange = (event) => {
+    const { onChange } = this.props;
     if (!this.el.current) {
       return;
     }
@@ -40,8 +43,8 @@ class ContentEditable extends React.Component{
     const previous = this.previousValue;
     this.previousValue = value;
 
-    if (this.props.onChange && value !== previous) {
-      this.props.onChange({ ...event, target: { value } });
+    if (onChange && value !== previous) {
+      onChange({ ...event, target: { value } });
     }
   };
 
@@ -50,8 +53,10 @@ class ContentEditable extends React.Component{
 
     return (
       <div
+        role="textbox"
+        tabIndex={0}
         className="editor"
-        contentEditable={true}
+        contentEditable
         onBlur={this.onChange}
         onInput={this.onChange}
         onKeyDown={this.onChange}
@@ -61,8 +66,22 @@ class ContentEditable extends React.Component{
       >
         {value}
       </div>
-    )
+    );
   }
 }
+
+ContentEditable.propTypes = {
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.string),
+  ]).isRequired,
+  onMouseUp: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
+};
+
+ContentEditable.defaultProps = {
+  onMouseUp: () => {},
+};
 
 export default ContentEditable;

@@ -9,11 +9,11 @@ class App extends Component {
     isLoading: false,
   };
 
-  getSynonyms = word => {
+  getSynonyms = (word) => {
     this.setState({ isLoading: true });
     axios
       .get(`https://api.datamuse.com/words?rel_syn=${word}`)
-      .then(res => this.setState({ synonyms: res.data.map(s => s.word), isLoading: false }));
+      .then((res) => this.setState({ synonyms: res.data.map((s) => s.word), isLoading: false }));
   };
 
   removeSynonyms = () => {

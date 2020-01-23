@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
+import * as PropTypes from 'prop-types';
 import ControlPanel from './ControlPanel';
-import './EditZone.css';
 import SynonymsPanel from './SynonymsPanel';
 import ContentEditable from './ContentEditable';
+import './EditZone.css';
 
 class FileZone extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selection: null,
       content: '',
     };
   }
 
-  applyStyle = event => {
+  applyStyle = (event) => {
     if (document.queryCommandSupported(event.currentTarget.value)) {
       document.execCommand(event.currentTarget.value, false, null);
     }
@@ -32,20 +32,20 @@ class FileZone extends Component {
     }
   };
 
-  handleSynonymClick = word => {
+  handleSynonymClick = (word) => {
     const { removeSynonyms } = this.props;
-      if (document.queryCommandSupported('insertText')) {
-        document.execCommand( 'insertText', false, word );
-      } else {
-        const range = document.selection.createRange();
-        range.deleteContents();
-        range.insertNode(document.createTextNode(word));
-      }
-      removeSynonyms();
+    if (document.queryCommandSupported('insertText')) {
+      document.execCommand('insertText', false, word);
+    } else {
+      const range = document.selection.createRange();
+      range.deleteContents();
+      range.insertNode(document.createTextNode(word));
+    }
+    removeSynonyms();
   };
 
-  handleChange = e => {
-    this.setState({ content: e.target.value })
+  handleChange = (e) => {
+    this.setState({ content: e.target.value });
   };
 
   render() {
@@ -60,11 +60,27 @@ class FileZone extends Component {
           isLoading={isLoading}
         />
         <div className="edit-zone">
-          <ContentEditable value={content} onChange={this.handleChange} onMouseUp={this.handleMouseUp} />
+          <ContentEditable
+            value={content}
+            onChange={this.handleChange}
+            onMouseUp={this.handleMouseUp}
+          />
         </div>
       </React.Fragment>
     );
   }
 }
+
+FileZone.propTypes = {
+  synonyms: PropTypes.arrayOf(PropTypes.string),
+  isLoading: PropTypes.bool,
+  getSynonyms: PropTypes.func.isRequired,
+  removeSynonyms: PropTypes.func.isRequired,
+};
+
+FileZone.defaultProps = {
+  synonyms: [],
+  isLoading: false,
+};
 
 export default FileZone;

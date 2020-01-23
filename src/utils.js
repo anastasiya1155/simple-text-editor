@@ -4,6 +4,7 @@ function findLastTextNode(node) {
   }
 
   const children = node.childNodes;
+  // eslint-disable-next-line no-plusplus
   for (let i = children.length - 1; i >= 0; i--) {
     const textNode = findLastTextNode(children[i]);
 
