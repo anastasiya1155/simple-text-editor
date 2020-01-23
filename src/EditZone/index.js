@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import ControlPanel from '../control-panel/ControlPanel';
-import './FileZone.css';
-import SynonymsPanel from './synonyms-panel/SynonymsPanel';
-import ContentEditable from './content-editable/ContentEditable';
+import ControlPanel from './ControlPanel';
+import './EditZone.css';
+import SynonymsPanel from './SynonymsPanel';
+import ContentEditable from './ContentEditable';
 
 class FileZone extends Component {
   constructor(props) {
@@ -59,7 +59,7 @@ class FileZone extends Component {
           handleSynonymClick={this.handleSynonymClick}
           isLoading={isLoading}
         />
-        <div id="file-zone">
+        <div className="edit-zone">
           <ContentEditable value={content} onChange={this.handleChange} onMouseUp={this.handleMouseUp} />
         </div>
       </React.Fragment>

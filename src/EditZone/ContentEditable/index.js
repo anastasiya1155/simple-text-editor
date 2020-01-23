@@ -1,5 +1,6 @@
 import React from 'react';
 import { normalizeHtml, replaceCaret } from '../../utils';
+import './ContentEditable.css';
 
 class ContentEditable extends React.Component{
   constructor(props) {
@@ -49,7 +50,7 @@ class ContentEditable extends React.Component{
 
     return (
       <div
-        id="file"
+        className="editor"
         contentEditable={true}
         onBlur={this.onChange}
         onInput={this.onChange}

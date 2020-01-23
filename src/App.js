@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
-import FileZone from './file-zone/FileZone';
-import getMockText from './text.service';
+import EditZone from './EditZone';
 
 class App extends Component {
   state = {
     synonyms: null,
     isLoading: false,
   };
-
-  getText() {
-    getMockText().then(result => {
-      console.log(result);
-    });
-  }
 
   getSynonyms = word => {
     this.setState({ isLoading: true });
@@ -35,7 +28,7 @@ class App extends Component {
           <span>Simple Text Editor</span>
         </header>
         <main>
-          <FileZone
+          <EditZone
             getSynonyms={this.getSynonyms}
             synonyms={synonyms}
             isLoading={isLoading}
